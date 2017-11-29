@@ -1,1 +1,6 @@
 target/
+# ignore eclipse fu
+.classpath
+.project
+.settings/
+Test.java
