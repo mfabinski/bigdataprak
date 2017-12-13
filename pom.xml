@@ -41,11 +41,32 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>de.cloudf.bigdataprak.WordCount</mainClass>
+							<mainClass>de.cloudf.bigdataprak.Aufgabe1</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
 			</plugin>
+      <plugin> <!-- Include dependencies -->
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+						<manifest>
+							<mainClass>de.cloudf.bigdataprak.Aufgabe1</mainClass>
+						</manifest>
+					</archive>
+        </configuration>
+      </plugin>
 		</plugins>
 	</build>
 </project>
