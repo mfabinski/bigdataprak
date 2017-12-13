@@ -30,20 +30,21 @@ public class Aufgabe2 {
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 		
 			Text title = movieTitle(value.toString());
-			if(title != new Text("")) {
-				context.write(new Text("Filmtitel"), title);
+			if(title.getLength() != new Text("").getLength()) {
+				context.write(title, new Text(""));
 			}
+			
 			
 		}
 	}
 
-	public static class IntSumReducer extends Reducer<Text, Text, Text, Iterable<Text>> {
+	public static class IntSumReducer extends Reducer<Text, Text, Text,Text> {
 		public void reduce(Text key, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
-			context.write(key, values);
+			context.write(key, new Text(""));
 		}
 	}
-	public static Text movieTitle(String value) {
+	public static Text movieTitle(String value) throws IOException{
 		JSONParser parser = new JSONParser();
 		try {
 			JSONObject movie = (JSONObject) parser.parse(value);
@@ -51,14 +52,15 @@ public class Aufgabe2 {
 			Iterator<JSONObject> iterator = ratings.iterator();
             while (iterator.hasNext()) {
                 JSONObject rating = (JSONObject) iterator.next();
-               if( Integer.parseInt("" + rating.get("userId")) == 10) {
-            	   		return (Text)movie.get("title");    	   
+               if( Integer.parseInt(rating.get("userId").toString()) == 10) {
+            	   		return new Text(movie.get("title").toString());    	   
                };
             }	
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch( Exception e) {
 			e.printStackTrace();
+			throw new IOException("Parsefehler...." + e.getMessage());
 		}
 		return new Text("");
 	}
@@ -71,7 +73,7 @@ public class Aufgabe2 {
 		job.setCombinerClass(IntSumReducer.class);
 		job.setReducerClass(IntSumReducer.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		job.setOutputValueClass(Text.class);
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
