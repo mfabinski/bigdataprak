@@ -29,23 +29,18 @@ public class Aufgabe4 {
 		// Map all movies average rating
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 			MovieRating result = averageRating(value.toString()); 
-			context.write(new Text(result.getMovie()), new DoubleWritable(result.getRatingcount()));
+			if (result.getRating() >= 4.0) // filter and only include movies with rating >=4
+				context.write(new Text(result.getMovie()), new DoubleWritable(result.getRating()));
 		}
 	}
 
 	public static class IntSumReducer extends Reducer<Text, IntWritable, Text, DoubleWritable> {
 		
-		// Filter with reduce method only those movies we need
 		public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
 				throws IOException, InterruptedException {
-			
+			// return all keys with the first value; there should be no second value
 			for (DoubleWritable val : values) {
-				// we only have one key per movie, so it is enough to check the first value.
-				// filter movies with rating >= 4
-				if (val.get() >= 4 ) {
-					context.write(key, new DoubleWritable(val.get()));
-				}
-				return; 
+				context.write(key, new DoubleWritable(val.get()));return;
 			}
 		
 		}
@@ -82,7 +77,7 @@ public class Aufgabe4 {
 		job.setCombinerClass(IntSumReducer.class);
 		job.setReducerClass(IntSumReducer.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		job.setOutputValueClass(DoubleWritable.class);
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);

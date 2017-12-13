@@ -9,7 +9,7 @@ public class MovieRating {
 	public void setMovie(String movie) {
 		this.movie = movie;
 	}
-	public double getRatingcount() {
+	public double getRating() {
 		return ratingcount;
 	}
 	public void setRatingcount(double ratingcount) {
