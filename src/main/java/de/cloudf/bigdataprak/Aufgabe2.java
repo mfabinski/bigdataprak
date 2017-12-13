@@ -57,6 +57,8 @@ public class Aufgabe2 {
             }	
 		} catch (ParseException e) {
 			e.printStackTrace();
+		} catch( Exception e) {
+			e.printStackTrace();
 		}
 		return new Text("");
 	}
