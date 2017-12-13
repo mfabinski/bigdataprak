@@ -41,7 +41,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>de.cloudf.bigdataprak.Aufgabe1</mainClass>
+							<mainClass>de.cloudf.bigdataprak.Aufgabe2</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -62,7 +62,7 @@
           </descriptorRefs>
           <archive>
 						<manifest>
-							<mainClass>de.cloudf.bigdataprak.Aufgabe1</mainClass>
+							<mainClass>de.cloudf.bigdataprak.Aufgabe2</mainClass>
 						</manifest>
 					</archive>
         </configuration>
